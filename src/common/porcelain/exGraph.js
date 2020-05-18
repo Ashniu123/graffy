@@ -1,25 +1,16 @@
 import { isRange, isBranch, isLink } from '../node';
 import pageInfo from './pageInfo';
+import { unwrapPorcelain } from '../path';
 
 const LINK_PLACEHOLDER = Symbol();
 
-export function descend(tree, path) {
-  let node = tree;
-  for (const key of path) {
-    if (!node) return;
-    if (!(key in node)) return undefined;
-    node = node[key];
-  }
-  return node;
-}
-
-export default function decorate(graph, links = []) {
+export default function exGraph(graph, links = []) {
   const result = graph && decorateChildren(graph, links);
 
   let link;
   while ((link = links.shift())) {
     const [from, key, path] = link;
-    const node = descend(result, path);
+    const node = unwrapPorcelain(result, path);
     if (node === LINK_PLACEHOLDER) {
       // Try this link again later. This is to resolve multi-hop links.
       // TODO: Cycle detection.
@@ -55,6 +46,9 @@ function decoratePage(graph, links) {
     if (isBranch(node)) {
       result.push(decorateChildren(node.children, links));
       continue;
+    }
+    if (typeof node.value === 'object' && node.value) {
+      node.value._val_ = true;
     }
     result.push(node.value);
   }

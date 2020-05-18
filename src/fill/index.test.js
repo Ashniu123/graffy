@@ -1,7 +1,7 @@
 // index.test.js
 
 import Graffy from '@graffy/core';
-import { page, link, makeGraph, makeQuery } from '@graffy/common';
+import { page, link, inGraph, inQuery } from '@graffy/common';
 import { mockBackend } from '@graffy/testing';
 import live from './index.js';
 
@@ -14,7 +14,7 @@ beforeEach(() => {
   g.use(backend.middleware);
 
   backend.write(
-    makeGraph(
+    inGraph(
       {
         bar: {
           1: { x: 1 },
@@ -44,13 +44,13 @@ beforeEach(() => {
 test('indexes', async () => {
   const subscription = g.call(
     'watch',
-    makeQuery({
-      foo: [{ first: 3 }, { x: true }],
+    inQuery({
+      foo: [{ _key_: { first: 3 }, x: true }],
     }),
   );
 
   expect((await subscription.next()).value).toEqual(
-    makeGraph(
+    inGraph(
       {
         bar: {
           1: { x: 1 },
@@ -72,7 +72,7 @@ test('indexes', async () => {
   );
 
   backend.write(
-    makeGraph(
+    inGraph(
       {
         bar: {
           2: null,
@@ -89,7 +89,7 @@ test('indexes', async () => {
     {
       key: 'bar',
       version: 0,
-      children: makeGraph(
+      children: inGraph(
         {
           1: { x: 1 },
           3: { x: 3 },

@@ -64,3 +64,13 @@ export function remove(children, path) {
     : [];
   return children.slice(0, ix).concat(filteredNode, children.slice(ix + 1));
 }
+
+export function unwrapPorcelain(tree, path) {
+  let node = tree;
+  for (const key of path) {
+    if (!node) return;
+    if (!(key in node)) return undefined;
+    node = node[key];
+  }
+  return node;
+}

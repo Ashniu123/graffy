@@ -14,7 +14,7 @@ export default function fill(_) {
 
       while (budget-- > 1) {
         const { known, unknown } = slice(value, query);
-        value = known;
+        value = known || [];
         if (!unknown) break;
         const res = await store.call('read', unknown, { skipFill: true });
         merge(value, res);

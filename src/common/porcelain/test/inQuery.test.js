@@ -1,16 +1,18 @@
-import { query } from '../query';
+import inQuery from '../inQuery';
 import { key } from '../../encode';
 
 it('should encode queries', () => {
   expect(
-    query(
+    inQuery(
       {
         postCount: 1,
-        posts: [
-          { first: 10, after: '1984' },
-          { title: 1, body: 1, author: { name: 1 } },
-        ],
-        tags: [{ first: 10 }, true],
+        posts: {
+          _key_: { first: 10, after: '1984' },
+          title: 1,
+          body: 1,
+          author: { name: 1 },
+        },
+        tags: [{ _key_: { first: 10 } }],
         reactions: [true],
       },
       2,
@@ -29,7 +31,7 @@ it('should encode queries', () => {
         ] },
       ] },
       { key: 'reactions', version: 2, children: [
-        { key: '', end: '\uffff', count: 4096, version: 2, value: 1 }
+        { key: '', end: '\uffff', version: 2, value: 1 }
       ] },
       { key: 'tags', version: 2, children: [
         { key: '', end: '\uffff', count: 10, version: 2, value: 1 }

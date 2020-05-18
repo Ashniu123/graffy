@@ -287,7 +287,7 @@ describe('addRange', () => {
   });
 });
 
-describe.skip('fillEmpty', () => {
+test('fillEmpty', () => {
   const original = [{ key: '', end: '\uffff', version: 0 }];
   expect(
     merge(original, [
@@ -297,7 +297,19 @@ describe.skip('fillEmpty', () => {
         version: 0,
       },
     ]),
-  ).toEqual([{}]);
+  ).toEqual([
+    { key: '', end: 'fon\uffff', version: 0 },
+    {
+      key: 'foo',
+      children: [
+        { key: '', end: 'baq\uffff', version: 0 },
+        { key: 'bar', value: 33, version: 0 },
+        { key: 'bar\0', end: '\uffff', version: 0 },
+      ],
+      version: 0,
+    },
+    { key: 'foo\0', end: '\uffff', version: 0 },
+  ]);
 });
 
 // describe('errors', () => {

@@ -1,10 +1,10 @@
 import {
-  decorate,
-  decorateQuery,
-  descend,
-  makeGraph,
+  exGraph,
+  exQuery,
+  unwrapPorcelain,
+  inGraph,
   makePath,
-  makeQuery,
+  inQuery,
   finalize,
   unwrap,
   wrap,
@@ -55,7 +55,7 @@ export default class Graffy {
     const [path, handle] = validateArgs(...args);
     this.on('read', path, async function porcelainRead(query, options) {
       return finalize(
-        makeGraph(await handle(decorateQuery(query), options)),
+        inGraph(await handle(exQuery(query), options)),
         query,
       );
     });
@@ -65,13 +65,13 @@ export default class Graffy {
     const [path, handle] = validateArgs(...args);
     this.on('watch', path, function porcelainWatch(query, options) {
       return makeStream((push, end) => {
-        const subscription = handle(decorateQuery(query), options);
+        const subscription = handle(exQuery(query), options);
         (async function () {
           try {
             let firstValue = (await subscription.next()).value;
-            push(firstValue && finalize(makeGraph(firstValue), query));
+            push(firstValue && finalize(inGraph(firstValue), query));
             for await (const value of subscription) {
-              push(value && makeGraph(value));
+              push(value && inGraph(value));
             }
           } catch (e) {
             end(e);
@@ -85,7 +85,7 @@ export default class Graffy {
   onWrite(...args) {
     const [path, handle] = validateArgs(...args);
     this.on('write', path, async function porcelainWrite(change, options) {
-      return makeGraph(await handle(decorate(change), options));
+      return inGraph(await handle(exGraph(change), options));
     });
   }
 
@@ -110,22 +110,22 @@ export default class Graffy {
 
   async read(...args) {
     const [path, porcelainQuery, options] = validateArgs(...args);
-    const query = wrap(makeQuery(porcelainQuery), path);
+    const query = wrap(inQuery(porcelainQuery), path);
     const result = await this.call('read', query, options || {});
-    return descend(decorate(result), path);
+    return unwrapPorcelain(exGraph(result), path);
   }
 
   watch(...args) {
     const [path, porcelainQuery, options] = validateArgs(...args);
-    const query = wrap(makeQuery(porcelainQuery), path);
+    const query = wrap(inQuery(porcelainQuery), path);
     const stream = this.call('watch', query, options || {});
-    return mapStream(stream, (value) => descend(decorate(value), path));
+    return mapStream(stream, (value) => unwrapPorcelain(exGraph(value), path));
   }
 
   async write(...args) {
     const [path, porcelainChange, options] = validateArgs(...args);
-    const change = wrap(makeGraph(porcelainChange), path);
+    const change = wrap(inGraph(porcelainChange), path);
     const writtenChange = await this.call('write', change, options || {});
-    return descend(decorate(writtenChange), path);
+    return unwrapPorcelain(exGraph(writtenChange), path);
   }
 }

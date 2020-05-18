@@ -4,17 +4,17 @@ import { makeStream } from '@graffy/stream';
 import {
   encodeKey,
   decodeKey,
-  makeQuery,
+  inQuery,
   merge,
   wrap,
   unwrap,
   makePath,
-  decorate,
+  exGraph,
 } from '@graffy/common';
 
 export default function (entityPrefix, entityQuery, getIndexKeys) {
   const prefix = makePath(entityPrefix);
-  const children = makeQuery(entityQuery);
+  const children = inQuery(entityQuery);
   const skipFill = { skipFill: true };
 
   return (store) => {
@@ -63,7 +63,7 @@ export default function (entityPrefix, entityQuery, getIndexKeys) {
     function updateEntity(entity) {
       const entityId = entity.key;
       const path = [...prefix, entityId];
-      const porcelainEntity = decorate(entity.children);
+      const porcelainEntity = exGraph(entity.children);
 
       for (const paramKey in state) {
         const { params, entities, pushFns } = state[paramKey];

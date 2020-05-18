@@ -1,7 +1,7 @@
-import decorate from '../decorate';
+import exGraph from '../exGraph';
 
-test('decorate', () => {
-  const decorated = decorate(
+test('exGraph', () => {
+  const decorated = exGraph(
     /* prettier-ignore */
     [
       { key: 'users', version: 2, children: [

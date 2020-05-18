@@ -1,8 +1,8 @@
 import {
   isBranch,
   isRange,
-  isLink,
   isOlder,
+  isLink,
   getIndex,
   getLastIndex,
 } from '../node';
@@ -57,10 +57,10 @@ export default function slice(graph, query, root) {
 }
 
 function sliceNode(graph, query, result) {
-  const { key, version } = query;
+  const { key } = query;
   const { root } = result;
   // console.log('Slicing', graph, query);
-  if (!graph || graph.key > key || isOlder(graph, version)) {
+  if (!graph || graph.key > key || isOlder(graph, 0)) {
     // The node found doesn't match the query or it's too old.
     result.addUnknown(query);
   } else if (isRange(graph)) {
@@ -81,7 +81,7 @@ function sliceNode(graph, query, result) {
     if (unknown) result.addUnknown({ ...query, children: unknown });
   } else if (isLink(graph) && isBranch(query)) {
     result.addKnown(graph);
-    result.addLinked(wrap(query.children, graph.path, version));
+    result.addLinked(wrap(query.children, graph.path));
   } else if (isBranch(graph) || isBranch(query)) {
     // One side is a branch while the other is a leaf; throw error.
     throw new Error('slice.leaf_branch_mismatch');
@@ -93,11 +93,11 @@ function sliceNode(graph, query, result) {
 }
 
 export function sliceRange(graph, query, result) {
-  let { key, end, count, version } = query;
+  let { key, end, count = Infinity } = query;
   if (count > 0) {
     for (let i = getIndex(graph, key); key <= end && count > 0; i++) {
       const node = graph[i];
-      if (!node || key < node.key || isOlder(node, version)) break;
+      if (!node || key < node.key || isOlder(node, 0)) break;
       if (isRange(node)) {
         result.addKnown(getOverlap(node, key, end));
       } else {
@@ -109,8 +109,7 @@ export function sliceRange(graph, query, result) {
   } else {
     for (let i = getLastIndex(graph, end) - 1; end >= key && count < 0; i--) {
       const node = graph[i];
-      if (!node || end > (node.end || node.key) || isOlder(node, version))
-        break;
+      if (!node || end > (node.end || node.key) || isOlder(node, 0)) break;
       if (isRange(node)) {
         result.addKnown(getOverlap(node, key, end));
       } else {

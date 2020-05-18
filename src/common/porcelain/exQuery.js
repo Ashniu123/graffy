@@ -1,24 +1,7 @@
 import { isRange, isBranch } from '../node';
-import { decodeKey } from '../encode';
-import { keyStep } from '../graph';
+import { exParams } from './params';
 
-function rangeToPage(key, end, count) {
-  const page = {};
-  page[count > 0 ? 'first' : 'last'] = count;
-  if (key !== '') {
-    const { key: k, step } = keyStep(key);
-    page.after = decodeKey(k);
-    if (step === 1) page.excludeAfter = true;
-  }
-  if (end !== '\uffff') {
-    const { key: k, step } = keyStep(end);
-    page.before = decodeKey(k);
-    if (step === -1) page.excludeBefore = true;
-  }
-  return page;
-}
-
-export default function decorateQuery(query) {
+export default function exQuery(query) {
   const result = decorateChildren(query);
   return result;
 }
@@ -38,10 +21,11 @@ function decoratePage(query) {
     const child = isBranch(node) ? decorateChildren(node.children) : true;
     if (isRange(node)) {
       const { key, end, count } = node;
-      result.push(rangeToPage(key, end, count), child);
+      const paramKey = exParams(key, end, count);
+      result.push(paramKey ? { _key_: paramKey, ...child } : child);
     } else {
       const { key } = node;
-      result.push(rangeToPage(key, key, 1), child);
+      result.push({ _key_: key, ...child });
     }
   }
 

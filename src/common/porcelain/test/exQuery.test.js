@@ -1,9 +1,9 @@
-import decorateQuery from '../decorateQuery';
+import exQuery from '../exQuery';
 import { key } from '../../encode';
 
-it('should decorate queries', () => {
+it('exQuery', () => {
   expect(
-    decorateQuery(
+    exQuery(
       /* prettier-ignore */
       [
         { key: 'postCount', value: 1, version: 2 },
@@ -24,9 +24,13 @@ it('should decorate queries', () => {
   ).toEqual({
     postCount: true,
     posts: [
-      { first: 10, after: '1984' },
-      { title: true, body: true, author: { name: true } },
+      {
+        _key_: { first: 10, after: '1984' },
+        title: true,
+        body: true,
+        author: { name: true },
+      },
     ],
-    tags: [{ first: 10 }, true],
+    tags: [{ _key_: { first: 10 } }],
   });
 });

@@ -5,4 +5,5 @@ export { default as sieve } from './sieve';
 
 export { default as mergeStreams } from './mergeStreams';
 export { default as setVersion } from './setVersion';
+export { default as finalize } from './finalize';
 export * from './step';

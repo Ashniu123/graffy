@@ -5,8 +5,7 @@ describe('slice', () => {
     expect(slice([], [])).toEqual({});
   });
 
-  test.skip('simple', () => {
-    // Skipping because of a bug in extracting a single null from a range.
+  test('simple', () => {
     expect(
       slice(
         [
@@ -234,7 +233,7 @@ describe('link', () => {
       unknown: [
         {
           key: 'bar',
-          version: 2,
+          version: 0,
           children: [{ key: 'flo', value: 1, version: 2 }],
         },
       ],
@@ -261,7 +260,7 @@ describe('link', () => {
       unknown: [
         {
           key: 'bar',
-          version: 2,
+          version: 0,
           children: [
             { key: 'flo', value: 1, version: 2 },
             { key: 'foo', value: 1, version: 2 },
@@ -272,7 +271,7 @@ describe('link', () => {
   });
 });
 
-describe('version', () => {
+describe.skip('version', () => {
   test('ignoreOldInRanges', () => {
     expect(
       slice(
@@ -329,7 +328,9 @@ describe('version', () => {
       ],
     });
   });
+});
 
+describe('regression', () => {
   test('leafInRange', () => {
     expect(
       slice(

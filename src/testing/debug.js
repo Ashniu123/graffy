@@ -32,7 +32,7 @@ export default function debug(graph, indent = '') {
         [
           `${version}`.padEnd(16),
           indent,
-          end ? interval(key, end) : escape(key),
+          end ? interval(key, end) : escape(key || ':root'),
           path ? ` ➚/${path.join('/')}` : '',
           value ? ` ${JSON.stringify(value)}` : '',
           Object.keys(rest).length > 0 ? ' ' + JSON.stringify(rest) : '',

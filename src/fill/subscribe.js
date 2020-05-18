@@ -42,6 +42,7 @@ export default function subscribe(store, originalQuery, { raw }) {
         // and verify that the store.read response is newer.
         value = await store.call('read', unknown, { skipCache: true });
       }
+      // console.log('Still unknown', debug(slice(value, unknown).unknown));
       value = value && slice(value, unknown).known;
       putValue(value, false);
     } catch (e) {

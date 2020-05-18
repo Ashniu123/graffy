@@ -47,7 +47,7 @@ describe('final', () => {
   });
 
   test('range', async () => {
-    const result = await store.read([{ first: 3 }, 1]);
+    const result = await store.read([{ _key_: { first: 3 } }]);
     expect(result).toEqual([42]);
   });
 });

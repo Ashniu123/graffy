@@ -1,7 +1,7 @@
 import Graffy from '@graffy/core';
 import Fill from '@graffy/fill';
 import IndexWatcher from './index.js';
-import { key, page, link, makeGraph } from '@graffy/common';
+import { key, page, link, inGraph } from '@graffy/common';
 import { mockBackend } from '@graffy/testing';
 
 const paramKey = key({ country: 'us' });
@@ -20,7 +20,7 @@ describe('indexer', () => {
     store.use('/users', users.middleware);
 
     users.write(
-      makeGraph(
+      inGraph(
         page({
           1: { name: 'Alice', country: 'us', timestamp: 104 },
           2: { name: 'Bob', country: 'us', timestamp: 100 },
@@ -52,7 +52,7 @@ describe('indexer', () => {
         if (end || children[0].value !== 'us') continue;
         results[key(children[2].value)] = link(['users', id]);
       }
-      return makeGraph({ [paramKey]: page(results) }, 0);
+      return inGraph({ [paramKey]: page(results) }, 0);
     });
 
     // console.log(store.core.handlers.watch);
@@ -61,7 +61,7 @@ describe('indexer', () => {
   test('initial', async () => {
     const stream = store.watch(
       ['users$', paramKey],
-      [{ first: 2 }, { name: true, country: true, timestamp: true }],
+      [{ _key_: { first: 2 }, name: true, country: true, timestamp: true }],
     );
 
     expect((await stream.next()).value).toEqual([
@@ -73,11 +73,11 @@ describe('indexer', () => {
   test('keyChangeIn', async () => {
     const stream = store.watch(
       ['users$', paramKey],
-      [{ first: 2 }, { name: true, country: true, timestamp: true }],
+      [{ _key_: { first: 2 }, name: true, country: true, timestamp: true }],
     );
 
     await stream.next();
-    users.write(makeGraph({ 3: { timestamp: 101 } }, 1));
+    users.write(inGraph({ 3: { timestamp: 101 } }, 1));
     expect((await stream.next()).value).toEqual([
       { name: 'Bob', country: 'us', timestamp: 100 },
       { name: 'Charles', country: 'us', timestamp: 101 },
@@ -87,11 +87,11 @@ describe('indexer', () => {
   test('keyChangeOut', async () => {
     const stream = store.watch(
       ['users$', paramKey],
-      [{ first: 2 }, { name: true, country: true, timestamp: true }],
+      [{ _key_: { first: 2 }, name: true, country: true, timestamp: true }],
     );
 
     await stream.next();
-    users.write(makeGraph({ 1: { timestamp: 115 } }, 10));
+    users.write(inGraph({ 1: { timestamp: 115 } }, 10));
     await stream.next(); // TODO: Fix this duplicate initialization.
     expect((await stream.next()).value).toEqual([
       { name: 'Bob', country: 'us', timestamp: 100 },
@@ -109,7 +109,7 @@ describe('indexer', () => {
       { name: 'Alice', timestamp: 104 },
       { name: 'Charles', timestamp: 107 },
     ]);
-    users.write(makeGraph({ 1: { timestamp: 110 } }));
+    users.write(inGraph({ 1: { timestamp: 110 } }));
     await stream.next();
     await stream.next();
     expect((await stream.next()).value).toEqual([
@@ -129,7 +129,7 @@ describe('indexer', () => {
       { name: 'Alice', timestamp: 104 },
       { name: 'Charles', timestamp: 107 },
     ]);
-    users.write(makeGraph({ 1: { timestamp: 91 } }));
+    users.write(inGraph({ 1: { timestamp: 91 } }));
     await stream.next();
     await stream.next();
     expect((await stream.next()).value).toEqual([
