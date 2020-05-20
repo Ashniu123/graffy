@@ -1,9 +1,9 @@
 import faker from 'faker';
-import { makeGraph, link, page } from '@graffy/common';
+import { inGraph, link, page } from '@graffy/common';
 
 const TARGET = 2000;
 
-// const state = makeGraph({ visitors: {}, visitorsByTime: page({}) });
+// const state = inGraph({ visitors: {}, visitorsByTime: page({}) });
 const freeIds = new Set();
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -85,7 +85,7 @@ function simulateEnter() {
   addId = '' + addId;
 
   enter++;
-  return makeGraph(
+  return inGraph(
     {
       visitors: { [addId]: { id: addId, ts, ...visitorInfo() } },
       visitorsByTime: { [ts]: link(['visitors', addId]) },
@@ -107,7 +107,7 @@ async function simulateLeave() {
   // console.log('Unwrap', debug(state), ['visitors', delId, 'ts'], delTs);
 
   leave++;
-  return makeGraph(
+  return inGraph(
     {
       visitors: { [delId]: null },
       visitorsByTime: { [delTs]: null },
@@ -124,5 +124,5 @@ function simulateUpdate() {
   upId = '' + upId;
   const url = faker.internet.url();
   update++;
-  return makeGraph({ visitors: { [upId]: { pageviews: { [ts]: url } } } }, ts);
+  return inGraph({ visitors: { [upId]: { pageviews: { [ts]: url } } } }, ts);
 }
