@@ -1,5 +1,5 @@
-import { inQuery } from '../../porcelain';
-import add from '../add';
+import { inQuery } from '../../porcelain/index.js';
+import add from '../add.js';
 
 test('unchanged', () => {
   const base = [];

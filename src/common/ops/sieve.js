@@ -1,5 +1,5 @@
-import { isBranch, isRange, getIndex, getLastIndex } from '../node';
-import { keyAfter, keyBefore } from './step';
+import { isBranch, isRange, getIndex, getLastIndex } from '../node/index.js';
+import { keyAfter, keyBefore } from './step.js';
 
 export default function sieve(current, changes, result = []) {
   let index = 0;

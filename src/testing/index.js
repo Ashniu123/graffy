@@ -1,3 +1,3 @@
-export { default as mockBackend } from './mockBackend';
-export { default as debug } from './debug';
-export { default as pretty } from './pretty';
+export { default as mockBackend } from './mockBackend.js';
+export { default as debug } from './debug.js';
+export { default as pretty } from './pretty.js';

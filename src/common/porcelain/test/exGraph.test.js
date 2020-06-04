@@ -1,4 +1,4 @@
-import exGraph from '../exGraph';
+import exGraph from '../exGraph.js';
 
 test('exGraph', () => {
   const decorated = exGraph(

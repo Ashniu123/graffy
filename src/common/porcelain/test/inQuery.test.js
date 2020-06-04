@@ -1,5 +1,5 @@
-import inQuery from '../inQuery';
-import { key } from '../../encode';
+import inQuery from '../inQuery.js';
+import { key } from '../../encode/index.js';
 
 it('should encode queries', () => {
   expect(

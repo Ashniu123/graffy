@@ -1,5 +1,5 @@
-import { isRange, isBranch } from '../node';
-import { exParams } from './params';
+import { isRange, isBranch } from '../node/index.js';
+import { exParams } from './params.js';
 
 export default function exQuery(query) {
   const result = decorateChildren(query);

@@ -1,4 +1,4 @@
-import { inParams } from './params';
+import { inParams } from './params.js';
 export const ROOT_KEY = Symbol();
 
 // We freeze constructed queries to guard against bugs that might mutate them.

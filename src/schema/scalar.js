@@ -1,5 +1,5 @@
-import { encodeNumber, decodeNumber } from './dencorder';
-import { variants } from './variants';
+import { encodeNumber, decodeNumber } from './dencorder.js';
+import { variants } from './variants.js';
 
 const base = (type) => ({
   validate(value) {

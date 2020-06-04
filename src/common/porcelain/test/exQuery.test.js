@@ -1,5 +1,5 @@
-import exQuery from '../exQuery';
-import { key } from '../../encode';
+import exQuery from '../exQuery.js';
+import { key } from '../../encode/index.js';
 
 it('exQuery', () => {
   expect(

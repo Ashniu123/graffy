@@ -1,6 +1,6 @@
-import { number, string, boolean, object } from './scalar';
-import { tuple, struct } from './tuple';
-import { map } from './map';
+import { number, string, boolean, object } from './scalar.js';
+import { tuple, struct } from './tuple.js';
+import { map } from './map.js';
 
 export function type(query) {
   if (typeof query !== 'object') throw Error('type.define.typeof_query');

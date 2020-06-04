@@ -1,4 +1,4 @@
-import { getIndex, isRange, isBranch } from '../node';
+import { getIndex, isRange, isBranch } from '../node/index.js';
 
 export const PATH_SEPARATOR = '/';
 

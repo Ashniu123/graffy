@@ -1,4 +1,4 @@
-import { struct, map, tuple, string, number } from './';
+import { struct, map, tuple, string, number } from './.js';
 
 describe('schema', () => {
   test('validate', () => {

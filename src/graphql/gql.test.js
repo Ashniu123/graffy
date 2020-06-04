@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import toQuery from './toQuery';
+import toQuery from './toQuery.js';
 
 test('toQuery', () => {
   expect(

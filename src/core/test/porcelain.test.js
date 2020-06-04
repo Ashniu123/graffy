@@ -1,4 +1,4 @@
-import Graffy from '../Graffy';
+import Graffy from '../Graffy.js';
 import GraffyFill from '@graffy/fill';
 import { link, scalar } from '@graffy/common';
 

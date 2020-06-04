@@ -1,5 +1,5 @@
-import { graph, page, link, scalar } from '../graph';
-import { key } from '../../encode';
+import { graph, page, link, scalar } from '../graph/index.js';
+import { key } from '../../encode/index.js';
 
 it('should encode graphs', () => {
   expect(

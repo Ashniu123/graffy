@@ -5,11 +5,11 @@ import {
   isLink,
   getIndex,
   getLastIndex,
-} from '../node';
-import { keyAfter, keyBefore } from './step';
-import { wrap } from '../path';
-import merge from './merge';
-import add from './add';
+} from '../node/index.js';
+import { keyAfter, keyBefore } from './step.js';
+import { wrap } from '../path/index.js';
+import merge from './merge.js';
+import add from './add.js';
 
 class Result {
   constructor(root) {

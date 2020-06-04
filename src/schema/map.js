@@ -1,6 +1,6 @@
-import { variants } from './variants';
-import { count } from './scalar';
-import { struct } from './tuple';
+import { variants } from './variants.js';
+import { count } from './scalar.js';
+import { struct } from './tuple.js';
 
 function pageTypes(t) {
   return {

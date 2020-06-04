@@ -6,7 +6,7 @@ import Graffy from '@graffy/core';
 import fill from '@graffy/fill';
 import cache from '@graffy/cache';
 import { httpServer, wsServer } from '@graffy/server';
-import mock from './mockVisitorList';
+import mock from './mockVisitorList.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

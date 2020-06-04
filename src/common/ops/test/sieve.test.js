@@ -1,5 +1,5 @@
-import sieve from '../sieve';
-import { inGraph } from '../../porcelain';
+import sieve from '../sieve.js';
+import { inGraph } from '../../porcelain/index.js';
 
 test('empty', () => {
   const g = [];

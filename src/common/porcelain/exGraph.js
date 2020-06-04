@@ -1,6 +1,6 @@
-import { isRange, isBranch, isLink } from '../node';
-import pageInfo from './pageInfo';
-import { unwrapPorcelain } from '../path';
+import { isRange, isBranch, isLink } from '../node/index.js';
+import pageInfo from './pageInfo.js';
+import { unwrapPorcelain } from '../path/index.js';
 
 const LINK_PLACEHOLDER = Symbol();
 

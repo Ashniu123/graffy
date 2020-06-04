@@ -1,4 +1,4 @@
-import { variants } from './variants';
+import { variants } from './variants.js';
 
 export const tuple = (...ts) =>
   variants({

@@ -1,8 +1,8 @@
-import { merge } from '../ops';
-import { isRange } from '../node';
-import { encodeKey } from '../encode';
-import { makePath } from '../path';
-import { inParams } from './params';
+import { merge } from '../ops/index.js';
+import { isRange } from '../node/index.js';
+import { encodeKey } from '../encode/index.js';
+import { makePath } from '../path/index.js';
+import { inParams } from './params.js';
 export const ROOT_KEY = Symbol();
 
 function makeNode(object, key, ver) {

@@ -1,4 +1,4 @@
-import { isRange } from '../node';
+import { isRange } from '../node/index.js';
 
 export default function pageInfo(graph) {
   if (!graph || !graph.length) return {};

@@ -1,5 +1,5 @@
-import { encodeKey, decodeKey } from '../encode';
-import { keyStep, keyAfter, keyBefore } from '../ops';
+import { encodeKey, decodeKey } from '../encode/index.js';
+import { keyStep, keyAfter, keyBefore } from '../ops/index.js';
 
 function empty(object) {
   for (const _ in object) return false;

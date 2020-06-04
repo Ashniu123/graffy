@@ -1,6 +1,6 @@
-import inGraph from '../inGraph';
-import { encodeKey } from '../../encode';
-import { keyBefore, keyAfter } from '../../ops';
+import inGraph from '../inGraph.js';
+import { encodeKey } from '../../encode/index.js';
+import { keyBefore, keyAfter } from '../../ops/index.js';
 
 test('simple', () => {
   const value = ['hi'];

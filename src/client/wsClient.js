@@ -1,5 +1,5 @@
 import { makeStream } from '@graffy/stream';
-import Socket from './Socket';
+import Socket from './Socket.js';
 
 export default (url, getOptions) => (store) => {
   if (!WebSocket) throw Error('client.websocket.unavailable');

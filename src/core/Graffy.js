@@ -11,7 +11,7 @@ import {
 } from '@graffy/common';
 import { makeStream, mapStream } from '@graffy/stream';
 import { shiftFn, shiftGen } from './shift.js';
-import Core from './Core';
+import Core from './Core.js';
 
 function validateArgs(first, ...args) {
   let path;
