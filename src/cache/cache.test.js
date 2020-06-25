@@ -20,34 +20,43 @@ describe('cache', () => {
     expect(result2).toEqual({ foo: 42 });
     expect(provider).toBeCalledTimes(1);
   });
-});
-
-describe('final', () => {
-  let store;
-
-  beforeEach(() => {
-    store = new Graffy();
-    store.use(Cache({ final: true }));
-    store.onRead(() => {
-      throw Error();
-    });
-    store.write({ foo: 42 });
-  });
-
-  test('simple', async () => {
-    const result = await store.read({ foo: 1, bar: 1 });
-    expect(result).toEqual({ foo: 42, bar: null });
-  });
-
-  test('watch', async () => {
-    const result = store.watch({ foo: 1 });
-    expect((await result.next()).value).toEqual(undefined);
-    store.write({ foo: 44 });
-    expect((await result.next()).value).toEqual({ foo: 44 });
-  });
 
   test('range', async () => {
     const result = await store.read([{ _key_: { first: 3 } }]);
     expect(result).toEqual([42]);
+  });
+});
+
+// describe('expiry', () => {});
+
+describe('optimism', () => {
+  let store;
+  let watchProvider, writeProvider;
+  let state = 42;
+
+  beforeEach(() => {
+    store = new Graffy();
+    store.use(Cache());
+    watchProvider = jest.fn(async function* () {
+      yield { foo: state };
+    });
+    writeProvider = jest.fn(({ foo }) => {
+      state = foo + 1;
+      return { foo: foo + 1 };
+    });
+    store.onWatch(watchProvider);
+    store.onWrite(writeProvider);
+  });
+
+  test('basic', async () => {
+    const stream = store.watch({ foo: true });
+    expect((await stream.next()).value).toEqual({ foo: 42 });
+    expect(await store.read({ foo: true })).toEqual({ foo: 42 });
+
+    store.write({ foo: 10 }, { optimism: true });
+    expect(await store.read({ foo: true })).toEqual({ foo: 10 });
+    expect((await stream.next()).value).toEqual({ foo: 10 });
+    expect(await store.read({ foo: true })).toEqual({ foo: 11 });
+    expect((await stream.next()).value).toEqual({ foo: 11 });
   });
 });

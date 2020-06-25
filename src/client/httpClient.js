@@ -1,14 +1,19 @@
 import { encodeUrl, serialize, deserialize } from '@graffy/common';
 import { makeStream } from '@graffy/stream';
 
-export default (baseUrl, getOptions) => (store) => {
+export default (baseUrl, { getOptions = () => {} } = {}) => (store) => {
   store.on('read', (query, options) => {
     if (!fetch) throw Error('client.fetch.unavailable');
     const encodedOptions = encodeURIComponent(
       serialize(getOptions('read', options)),
     );
     const url = `${baseUrl}?q=${encodeUrl(query)}&opts=${encodedOptions}`;
-    return fetch(url).then((res) => res.json());
+    return fetch(url).then((res) => {
+      if (res.status === 200) return res.json();
+      return res.text().then((message) => {
+        throw Error('server.' + message);
+      });
+    });
   });
 
   store.on('watch', (query, options) => {
@@ -29,7 +34,7 @@ export default (baseUrl, getOptions) => (store) => {
       };
 
       source.addEventListener('graffyerror', (e) => {
-        end(Error('server:' + e.data));
+        end(Error('server.' + e.data));
       });
 
       return () => {
@@ -48,6 +53,11 @@ export default (baseUrl, getOptions) => (store) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: serialize(change),
-    }).then((res) => res.json());
+    }).then((res) => {
+      if (res.status === 200) return res.json();
+      return res.text().then((message) => {
+        throw Error('server.' + message);
+      });
+    });
   });
 };
